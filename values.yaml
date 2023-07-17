@@ -13,8 +13,7 @@ nginx:
   serviceType: "ClusterIP"
   port: "80"
   targetPort: "80"
-  replicas: "1"
-  reolicas: "1"
+  replicas: "3"
   appName: "nginx"
   tire: "frontend"
   livenessProbe: true 
