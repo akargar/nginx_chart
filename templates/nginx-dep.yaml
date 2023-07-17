@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nginx.deploymentName }} 
+  namespace: {{ .Values.global.namespace }} 
+spec:
+  replicas: {{ .Values.nginx.replicas }} 
+  selector:
+    matchLabels:
+      appName: {{ .Values.nginx.appName | quote }}
+      owner: {{ .Values.global.owner | quote }}
+  template:
+    metadata:
+      labels:
+        appName: {{ .Values.nginx.appName | quote }}
+        owner: {{ .Values.global.owner | quote }}
+        tire: {{ .Values.nginx.tire | quote }} 
+    spec: 
+      containers:
+        - name: {{ .Values.nginx.containerName }}
+          image: nginx:latest 
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- if .Values.nginx.readinessProbe }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.nginx.targetPort }}
+            timeoutSeconds: {{ .Values.nginx.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.nginx.initialDelaySeconds }}
+            periodSeconds: {{ .Values.nginx.periodSeconds }}
+            failureThreshold: {{ .Values.nginx.failureThreshold }}
+            successThreshold: {{ .Values.nginx.successThreshold }}
+          {{- end }}
+          {{- if .Values.nginx.livenessProbe }}
+          livenessProbe:
+            httpGet: 
+              path: /
+              port: {{ .Values.nginx.targetPort }}
+            timeoutSeconds: {{ .Values.nginx.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.nginx.initialDelaySeconds }}
+            periodSeconds: {{ .Values.nginx.periodSeconds }}
+            failureThreshold: {{ .Values.nginx.failureThreshold }}
+            successThreshold: {{ .Values.nginx.successThreshold }}
+          {{- end }}
+        
