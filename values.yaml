@@ -9,7 +9,7 @@ nginx:
   deploymentName: "nginx-dep"
   containerName: "nginx"
   dockerImageTag: "latest"
-  serviceName: "nginx-srv-new"
+  serviceName: "srv-new"
   serviceType: "ClusterIP"
   port: "80"
   targetPort: "80"
