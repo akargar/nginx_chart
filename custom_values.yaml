@@ -1,2 +1,2 @@
 nginx:
-  replicas: 4
+  replicas: 2
